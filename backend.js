@@ -1,27 +1,25 @@
 import fs from "fs";
 import {onEvent,startServer} from "soquetic";
-let pedidos = JSON.parse(fs.readFileSync('data/pedidos.json', 'utf8') || '[]');
 
-
-function guardar_pedido(pedido){
-    pedidos.push(pedido);
-    fs.writeFileSync("data/pedidos.json",JSON.stringify(pedidos),null,2);
-
-    return ({ok:true});
+let pesdidos = JSON.parse(fs.readFileSync("./data/pedidos.json", "utf-8"))
+function responder_a_sabores() {
+    let sabores = JSON.parse(fs.readFileSync("./data/sabores.json", "utf-8"));
+    return sabores;
 }
-function poner_productos(){
-    let productos= JSON.parse(fs.readFileSync("data/productos.json"));
+
+function responder_a_productos() {
+    let productos = JSON.parse(fs.readFileSync("./data/productos.json","utf-8"));
     return productos;
 }
 
+function responder_a_pedido(data) {
+    pesdidos.push(data);
+    fs.writeFileSync("./data/pedidos.json", JSON.stringify(pesdidos));
 
-function poner_sabores(){
-    let sabores= JSON.parse(fs.readFileSync("data/sabores.json"))
-    return sabores;
+    return {ok : true};
 }
-onEvent("sabores", poner_sabores)
-onEvent("productos", poner_productos)
-onEvent("pedido", guardar_pedido)
-
+onEvent("sabores", responder_a_sabores);
+onEvent("productos", responder_a_productos);
+onEvent("pedido", responder_a_pedido);
 
 startServer();
